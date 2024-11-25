@@ -15,22 +15,23 @@ def drawmaze():
   maze.pensize(3)
   
   n = 30
-  step = 18
+  step = 17
   angle = 90
   for i in range(n):
-    dinstance = i * step
-    if random.random() < 0.3 and dinstance > 20:
-      door_pos = random.randint(step, dinstance-step)
-      maze.forward(door_pos)
-      maze.penup()
-      maze.forward(25)
-      maze.pendown()
-      maze.forward(dinstance - door_pos - step)
-      maze.right(angle)
-    else:
-      maze.forward(dinstance)
-      maze.right(angle)
-  
+    distance = i * step + step * 2
+    door_pos = random.randint(step, distance - step)
+    maze.forward(door_pos)
+    maze.penup()
+    maze.forward(step)
+    maze.pendown()
+    
+    maze.right(angle)
+    maze.forward(30)
+    maze.backward(30)
+    maze.left(angle)
+    
+    maze.forward(distance - door_pos - step)
+    maze.right(angle)
 
 drawmaze()
 
