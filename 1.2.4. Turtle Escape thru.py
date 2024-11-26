@@ -21,14 +21,23 @@ def drawmaze():
     distance = i * step + step * 2
     door_pos = random.randint(step, distance - step)
     maze.forward(door_pos)
-    maze.penup()
-    maze.forward(step)
-    maze.pendown()
-    
-    maze.right(angle)
-    maze.forward(30)
-    maze.backward(30)
-    maze.left(angle)
+    randomind  = random.randint(1,2)
+    if randomind == 2:
+      maze.penup()
+      maze.forward(step)
+      maze.pendown()
+      maze.right(angle)
+      maze.forward(30)
+      maze.backward(30)
+      maze.left(angle)
+    elif randomind == 1:
+      maze.right(angle)
+      maze.forward(30)
+      maze.backward(30)
+      maze.left(angle)
+      maze.penup()
+      maze.forward(step)
+      maze.pendown()
     
     maze.forward(distance - door_pos - step)
     maze.right(angle)
