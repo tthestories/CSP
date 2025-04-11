@@ -22,22 +22,28 @@ plt.bar(temp_data['Year'], temp_data['Anomaly'], align='center', color='green')
 plt.show()
 
 # TODO #5: Calculate min, max, and avg anomaly and the corresponding min/max years
+
 min_anomaly = temp_data['Anomaly'][0]
 max_anomaly = temp_data['Anomaly'][0]
 min_year = temp_data['Year'][0]
 max_year = temp_data['Year'][0]
 sum_anomaly = 0
-avg_anomaly = 0
 
+# Loop through the anomaly data
 for i in range(len(temp_data['Anomaly'])):
-  if (temp_data['Anomaly'][i] < min_anomaly):
-    min_anomaly = temp_data['Anomaly'][i]
-    min_year = temp_data['Year'][i]
-  elif (temp_data['Anomaly'][i] > max_anomaly):
-    max_anomaly = temp_data['Anomaly'][i]
-    max_year = temp_data['Year'][i]
+    sum_anomaly += temp_data['Anomaly'][i]  # Add each anomaly to the sum
     
-avg_anomaly = sum_anomaly/len(temp_data['Anomaly'])
-print("The maximum anomaly is:", max_anomaly, "which occured in", max_year)
-print("The minimum anomaly is:", min_anomaly, "which occured in", min_year)
+    if temp_data['Anomaly'][i] < min_anomaly:
+        min_anomaly = temp_data['Anomaly'][i]
+        min_year = temp_data['Year'][i]
+    elif temp_data['Anomaly'][i] > max_anomaly:
+        max_anomaly = temp_data['Anomaly'][i]
+        max_year = temp_data['Year'][i]
+
+# Calculate average anomaly
+avg_anomaly = sum_anomaly / len(temp_data['Anomaly'])
+
+# Print the results
+print("The maximum anomaly is:", max_anomaly, "which occurred in", max_year)
+print("The minimum anomaly is:", min_anomaly, "which occurred in", min_year)
 print("The average anomaly is:", avg_anomaly)
