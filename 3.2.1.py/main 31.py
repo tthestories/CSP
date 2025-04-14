@@ -1,34 +1,49 @@
-import csv
-import pygame
+# a321_temps_analysis.py
+# This program uses the pandas module to load a 2-dimensional data sheet into a pandas DataFrame object
+# Then it will use the matplotlib module to plot a graph and a bar chart
+import matplotlib.pyplot as plt
+import pandas as pd
 
-# Initialize Pygame
-pygame.init()
-screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Climate Data Explorer")
+# Load in the data with read_csv()
+# TODO #1: change the file name to your data file name
+temp_data = pd.read_csv("temperature_data.csv", header=0)   # identify the header row
 
-# Load temperature anomaly data
-temp_data = []
-with open('GlobalTempAnomaly.csv', 'r') as file:
-    reader = csv.reader(file)
-    next(reader)  # Skip header
-    for row in reader:
-        temp_data.append({'year': int(row[0]), 'anomaly': float(row[1])})
+# TODO #2: Use matplotlib to make a line graph
+plt.plot(temp_data['Year'], temp_data['Anomaly'], color='gray')
+plt.ylabel('Temperature Anomalies in Celsius')
+plt.xlabel('Years')
+plt.title('Change in Temperatures')
 
-# Process data for visualization
-min_anomaly = min([d['anomaly'] for d in temp_data])
-max_anomaly = max([d['anomaly'] for d in temp_data])
-avg_anomaly = sum([d['anomaly'] for d in temp_data]) / len(temp_data)
-min_year = [d['year'] for d in temp_data if d['anomaly'] == min_anomaly][0]
-max_year = [d['year'] for d in temp_data if d['anomaly'] == max_anomaly][0]
+# TODO #3: Plot LOWESS in a line graph
+plt.plot(temp_data['Year'], temp_data['LOWESS'], color='blue')
 
-# Visualization loop (simplified)
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-    screen.fill((255, 255, 255))
-    # Draw temperature anomaly graph (line graph logic here)
-    pygame.display.flip()
+# TODO #4: Use matplotlib to make a bar chart
+plt.bar(temp_data['Year'], temp_data['Anomaly'], align='center', color='green')
+plt.show()
 
-pygame.quit()
+# TODO #5: Calculate min, max, and avg anomaly and the corresponding min/max years
+
+min_anomaly = temp_data['Anomaly'][0]
+max_anomaly = temp_data['Anomaly'][0]
+min_year = temp_data['Year'][0]
+max_year = temp_data['Year'][0]
+sum_anomaly = 0
+
+# Loop through the anomaly data
+for i in range(len(temp_data['Anomaly'])):
+    sum_anomaly += temp_data['Anomaly'][i]  # Add each anomaly to the sum
+    
+    if temp_data['Anomaly'][i] < min_anomaly:
+        min_anomaly = temp_data['Anomaly'][i]
+        min_year = temp_data['Year'][i]
+    elif temp_data['Anomaly'][i] > max_anomaly:
+        max_anomaly = temp_data['Anomaly'][i]
+        max_year = temp_data['Year'][i]
+
+# Calculate average anomaly
+avg_anomaly = sum_anomaly / len(temp_data['Anomaly'])
+
+# Print the results
+print("The maximum anomaly is:", max_anomaly, "which occurred in", max_year)
+print("The minimum anomaly is:", min_anomaly, "which occurred in", min_year)
+print("The average anomaly is:", avg_anomaly)
